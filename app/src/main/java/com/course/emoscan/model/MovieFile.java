@@ -16,7 +16,7 @@ public class MovieFile {
     private float angerPercentage;
     private float disgustPercentage;
     private float surprisePercentage;
-    private String dateCreated;
+    private String dateCreated; //TODO: change to date format later.
 
     public MovieFile(String fileName, float happinessPercentage, float sadnessPercentage, float fearPercentage, float angerPercentage, float disgustPercentage, float surprisePercentage, Timestamp dateCreated) {
         this.userId = 1; // TODO: change later!
@@ -29,6 +29,38 @@ public class MovieFile {
         this.disgustPercentage = disgustPercentage;
         this.surprisePercentage = surprisePercentage;
         // note: id is automatically set in DB and userId is fetched from DB.
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public float getHappinessPercentage() {
+        return happinessPercentage;
+    }
+
+    public float getSadnessPercentage() {
+        return sadnessPercentage;
+    }
+
+    public float getFearPercentage() {
+        return fearPercentage;
+    }
+
+    public float getAngerPercentage() {
+        return angerPercentage;
+    }
+
+    public float getDisgustPercentage() {
+        return disgustPercentage;
+    }
+
+    public float getSurprisePercentage() {
+        return surprisePercentage;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
     }
 
     public MovieFile(JSONObject o) {

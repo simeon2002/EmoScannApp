@@ -2,8 +2,6 @@ package com.course.emoscan;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -11,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.course.emoscan.model.MovieFile;
+import com.course.emoscan.model.MovieFileAdapter;
 import com.google.android.material.navigation.NavigationBarView;
 
 import org.json.JSONArray;
@@ -32,6 +33,7 @@ public class FilesActivity extends AppCompatActivity {
     private static final String USER_FILES_URL = "https://studev.groept.be/api/a23PT314/getFiles";
     private List<MovieFile> files = new ArrayList<MovieFile>();
 
+    private RecyclerView filesView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,24 +46,15 @@ public class FilesActivity extends AppCompatActivity {
         });
         // fetch views
         navigationBar = findViewById(R.id.bottom_navigation);
-
+        filesView = findViewById(R.id.filesDisplayView);
 
         // set up navigation bar
-        navigationBar.setSelectedItemId(R.id.files);
-        navigationBar.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.files) {
-                return true;
-            } else if (item.getItemId() == R.id.home) {
-                startActivity(new Intent(this, MainActivity.class));
-                return true;
-            } else if (item.getItemId() == R.id.profile) {
-                startActivity(new Intent(this, ProfileActivity.class));
-                return true;
-            } else
-                return false;
-        });
-
-        // get files request.
+        setUpNavBar();
+        // files request.
+        //set up recyclerView.
+        MovieFileAdapter fileAdapter = new MovieFileAdapter(files);
+        filesView.setAdapter(fileAdapter);
+        filesView.setLayoutManager(new LinearLayoutManager(this));
         requestUserFiles(); // TODO: add user_id later perhaps.
     }
 
@@ -104,8 +97,7 @@ public class FilesActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         // iteration 1
                         processJSONResponse(response);
-                        TextView txtView = (TextView) findViewById(R.id.viewFilesDisplay);
-                        txtView.setText(String.valueOf(files.size()));
+                        filesView.getAdapter().notifyDataSetChanged();
                     }
                 },
                 new Response.ErrorListener() {
@@ -130,5 +122,21 @@ public class FilesActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void setUpNavBar() {
+        navigationBar.setSelectedItemId(R.id.files);
+        navigationBar.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.files) {
+                return true;
+            } else if (item.getItemId() == R.id.home) {
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+            } else if (item.getItemId() == R.id.profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            } else
+                return false;
+        });
     }
 }

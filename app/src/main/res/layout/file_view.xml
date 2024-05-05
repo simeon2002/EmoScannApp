@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <TextView
-            android:id="@+id/fileDate"
+            android:id="@+id/fileDateCreated"
             android:layout_width="209dp"
             android:layout_height="28dp"
             android:layout_marginStart="8dp"
